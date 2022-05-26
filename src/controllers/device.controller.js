@@ -1,6 +1,6 @@
 const deviceModel = require('../models/device.model');
 const roomModel = require('../models/room.model');
-
+const Gpio = require('pigpio').Gpio;
 exports.create = async (req, res) => {
   const {
     name,
@@ -15,7 +15,6 @@ exports.create = async (req, res) => {
     room
   } = req.body;
   try {
-    console.log(req.body);
     const newDevice = await deviceModel.create({
       name,
       icon,
@@ -66,6 +65,16 @@ exports.findAll = async (req, res) => {
     });
   }
 };
+exports.allDevices = async ( ) => {
+  try {
+    const devices = await deviceModel.find();
+    return devices;
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error occurred. Please Try again.'
+    });
+  }
+};
 
 exports.findOne = async (req, res) => {
   try {
@@ -83,8 +92,34 @@ exports.findOne = async (req, res) => {
 exports.update = async (req, res) => {
   try {
     const id = req.params.id;
-    const { name, icon, switchStatus, controlType, value, type, room } =
+    const { name, icon, switchStatus, controlType, value, type, room, gpio, loadOption } =
       req.body;
+      const oldDevice = await deviceModel.findById(id);
+     if(oldDevice.switchStatus !== switchStatus || oldDevice.value !== value && type === 'load' ){
+      switch(loadOption) {
+        case 'digitalRead':
+         
+          break;
+        case 'digitalWrite':
+          console.log(switchStatus)
+          const led = new Gpio(gpio, {mode: Gpio.OUTPUT});
+            led.digitalWrite(switchStatus);
+          break;
+        case 'pwmRead':
+           
+          break;
+        case 'pwmWrite':
+          const led4 = new Gpio(gpio, {mode: Gpio.OUTPUT});
+          if(switchStatus){
+            led4.pwmWrite(value)
+          }else{
+            led4.pwmWrite(0)
+          }
+          break;
+        default:
+          return
+      }
+     }
     const device = await deviceModel.findByIdAndUpdate(
       id,
       {
@@ -104,6 +139,7 @@ exports.update = async (req, res) => {
       device
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       message: 'Error occurred. Please Try again.',
       error: error

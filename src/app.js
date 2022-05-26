@@ -4,10 +4,18 @@ const cors = require('cors');
 const authRoute = require('./routes/auth.route');
 const roomRoute = require('./routes/room.route');
 const deviceRoute = require('./routes/device.route');
+const testRouter = require('./routes/test.router');
+const deviceController = require('./controllers/device.controller');
 
 const corsOptions = {
   origin: '*'
 };
+let item = 5;
+setTimeout(  async() => { 
+  const allDevices = await deviceController.allDevices();
+  console.log(allDevices);
+  
+}, 500);
 
 const app = express();
 app.use(express.json());
@@ -16,11 +24,14 @@ app.use(cors(corsOptions));
 app.use('/api/v1/auth', authRoute);
 app.use('/api/v1/rooms', roomRoute);
 app.use('/api/v1/devices', deviceRoute);
-
+app.use('/test', testRouter);
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to smart home api application.' });
 });
-
+// app.use(async()=>{
+//   const allDevices = await deviceController.findAll();
+//   console.log(allDevices);
+// })
 // eslint-disable-next-line no-unused-vars
 app.use(function (error, req, res, next) {
   // eslint-disable-next-line no-console
