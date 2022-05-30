@@ -6,6 +6,7 @@ const roomRoute = require('./routes/room.route');
 const deviceRoute = require('./routes/device.route');
 const testRouter = require('./routes/test.router');
 const deviceController = require('./controllers/device.controller');
+const sensorController = require('./controllers/sensor.controller');
 
 const corsOptions = {
   origin: '*'
@@ -20,6 +21,7 @@ app.use(cors(corsOptions));
 app.use('/api/v1/auth', authRoute);
 app.use('/api/v1/rooms', roomRoute);
 app.use('/api/v1/devices', deviceRoute);
+app.use('/api/v1/sensors', sensorController);
 app.use('/test', testRouter);
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to smart home api application.' });
