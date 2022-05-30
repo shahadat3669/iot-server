@@ -11,11 +11,7 @@ const corsOptions = {
   origin: '*'
 };
 let item = 5;
-setTimeout(  async() => { 
-  const allDevices = await deviceController.allDevices();
-  console.log(allDevices);
-  
-}, 500);
+ 
 
 const app = express();
 app.use(express.json());
@@ -28,10 +24,7 @@ app.use('/test', testRouter);
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to smart home api application.' });
 });
-// app.use(async()=>{
-//   const allDevices = await deviceController.findAll();
-//   console.log(allDevices);
-// })
+ 
 // eslint-disable-next-line no-unused-vars
 app.use(function (error, req, res, next) {
   // eslint-disable-next-line no-console

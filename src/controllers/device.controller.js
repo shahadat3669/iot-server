@@ -15,6 +15,9 @@ exports.create = async (req, res) => {
     room
   } = req.body;
   try {
+    if(type === 'sensor' && value === 1){
+      switchStatus = true
+    }
     const newDevice = await deviceModel.create({
       name,
       icon,

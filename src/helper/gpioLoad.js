@@ -1,22 +1,4 @@
 const Gpio = require('pigpio').Gpio;
-exports.switchConnection = (loadOption, digitalReadF )=> {
-    switch(loadOption) {
-        case digitalRead:
-            digitalReadF(gpio, switchStatu)
-          break;
-        case digitalWrite:
-          // code block
-          break;
-        case pwmRead:
-          // code block
-          break;
-        case pwmWrite:
-          // code block
-          break;
-        default:
-          return
-      }
-}
-const digitalReadF = () =>{
-
-}
+const led = new Gpio(pin, {  alert: true});
+led.mode(Gpio.INPUT)
+const led2 = new Gpio(pin, {mode: Gpio.INPUT, alert: true});
